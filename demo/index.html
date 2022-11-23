@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      background: #fafafa;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+</head>
+
+<body>
+  <div id="switcher"></div>
+  <div id="code"></div>
+  <div id="demo"></div>
+
+  <script type="module">
+    import {html, render} from 'lit';
+    import {map} from 'lit/directives/map.js';
+    import '../dist/src/BfeBarcode.js';
+    import * as barcodeTypes from '../dist/src/types/JsBarcode.js';
+
+    function _changeHandler(e) {
+      const BarcodeFormat = e.target.value;
+      document.querySelector("bfe-barcode").setAttribute('format', BarcodeFormat);
+    }
+
+    function _changeCode(e) {
+      const code = e.target.value;
+      document.querySelector("bfe-barcode").setAttribute('code', code);
+    }
+
+    render(
+      html`
+        <bfe-barcode format="UPC" code="123456789012"></bfe-barcode>
+      `,
+      document.querySelector('#demo')
+    );
+
+    render(
+      html`
+        <select @change="${_changeHandler}">
+          ${map(Object.keys(barcodeTypes.BarcodeFormat), (i) => html`<option value=${i}>${i}</option>`)}
+        </select>
+      `,
+      document.querySelector("#switcher")
+    )
+
+    render(
+      html`
+        <input type="text" @keyup="${_changeCode}" value="123456789012" />
+      `,
+      document.querySelector("#code")
+    )
+  </script>
+</body>
+
+</html>
